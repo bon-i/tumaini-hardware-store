@@ -1,131 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.1" name="viewport">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lipa na mpesa</title>
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link href="" rel="stylesheet" />
+    <!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" ">
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"
+    ></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap");
 
-  <title>Tumaini Hardware Store</title>
+      body {
+        background-color: #eaedf4;
+        font-family: "Rubik", sans-serif;
+      }
 
+      .card {
+        width: 310px;
+        border: none;
+        border-radius: 15px;
+      }
 
-<?php
-	session_start();
-  if(!isset($_SESSION['login_id']))
-    header('location:login.php');
- include('./header.php');
- // include('./auth.php');
- ?>
+      .justify-content-around div {
+        border: none;
+        border-radius: 20px;
+        background: #f3f4f6;
+        padding: 5px 20px 5px;
+        color: #8d9297;
+      }
 
-</head>
-<style>
-	body{
-        background: #80808045;
-  }
-</style>
+      .justify-content-around span {
+        font-size: 12px;
+      }
 
-<body>
-	<?php include 'topbar.php' ?>
-	<?php include 'navbar.php' ?>
-  <div class="toast" id="alert_toast" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="toast-body text-white">
+      .justify-content-around div:hover {
+        background: #545ebd;
+        color: #fff;
+        cursor: pointer;
+      }
+
+      .justify-content-around div:nth-child(1) {
+        background: #545ebd;
+        color: #fff;
+      }
+
+      span.mt-0 {
+        color: #8d9297;
+        font-size: 12px;
+      }
+
+      h6 {
+        font-size: 15px;
+      }
+      .mpesa {
+        background-color: green !important;
+      }
+
+      img {
+        border-radius: 15px;
+      }
+    </style>
+  </head>
+  <body oncontextmenu="return false" class="snippet-body">
+    <div class="container d-flex justify-content-center">
+      <div class="card mt-5 px-3 py-4">
+        <div class="d-flex flex-row justify-content-around">
+          <div class="mpesa"><span>Mpesa </span></div>
+          <div><span>Paypal</span></div>
+          <div><span>Card</span></div>
+        </div>
+        <div class="media mt-4 pl-2">
+          <img src="./images/1200px-M-PESA_LOGO-01.svg.png" class="mr-3" height="75" />
+          <div class="media-body">
+            <h6 class="mt-1">Tumaini Hardware Store</h6>
+          </div>
+        </div>
+        <div class="media mt-3 pl-2">
+                          <!--bs5 input-->
+
+            <form class="row g-3" action="./stk_initiate.php" method="POST">
+            
+                <div class="col-12">
+                  <label for="inputAddress" class="form-label">Amount</label>
+                  <input type="text" class="form-control" name="amount" placeholder="Enter Amount">
+                </div>
+                <div class="col-12">
+                  <label for="inputAddress2" class="form-label" >Phone Number</label>
+                  <input type="text" class="form-control" name="phone"  placeholder="Enter Phone Number">
+                </div>
+             
+                <div class="col-12">
+                  <button type="submit" class="btn btn-success" name="submit" value="submit">Pay </button>
+                </div>
+              </form>
+              <!--bs5 input-->
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-  <main id="view-panel" >
-      <?php $page = isset($_GET['page']) ? $_GET['page'] :'home'; ?>
-  	<?php include $page.'.php' ?>
-
-
-  </main>
-
-  <div id="preloader"></div>
-  <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
-
-<div class="modal fade" id="confirm_modal" role='dialog'>
-    <div class="modal-dialog modal-md" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-        <h5 class="modal-title">Confirmation</h5>
-      </div>
-      <div class="modal-body">
-        <div id="delete_content"></div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" id='confirm' onclick="">Continue</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
-      </div>
-    </div>
-  </div>
-  <div class="modal fade" id="uni_modal" role='dialog'>
-    <div class="modal-dialog modal-md" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-        <h5 class="modal-title"></h5>
-      </div>
-      <div class="modal-body">
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" id='submit' onclick="$('#uni_modal form').submit()">Save</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-      </div>
-      </div>
-    </div>
-  </div>
-</body>
-<script>
-	 window.start_load = function(){
-    $('body').prepend('<di id="preloader2"></di>')
-  }
-  window.end_load = function(){
-    $('#preloader2').fadeOut('fast', function() {
-        $(this).remove();
-      })
-  }
-
-  window.uni_modal = function($title = '' , $url=''){
-    start_load()
-    $.ajax({
-        url:$url,
-        error:err=>{
-            console.log()
-            alert("An error occured")
-        },
-        success:function(resp){
-            if(resp){
-                $('#uni_modal .modal-title').html($title)
-                $('#uni_modal .modal-body').html(resp)
-                $('#uni_modal').modal('show')
-                end_load()
-            }
-        }
-    })
-}
-window._conf = function($msg='',$func='',$params = []){
-     $('#confirm_modal #confirm').attr('onclick',$func+"("+$params.join(',')+")")
-     $('#confirm_modal .modal-body').html($msg)
-     $('#confirm_modal').modal('show')
-  }
-   window.alert_toast= function($msg = 'TEST',$bg = 'success'){
-      $('#alert_toast').removeClass('bg-success')
-      $('#alert_toast').removeClass('bg-danger')
-      $('#alert_toast').removeClass('bg-info')
-      $('#alert_toast').removeClass('bg-warning')
-
-    if($bg == 'success')
-      $('#alert_toast').addClass('bg-success')
-    if($bg == 'danger')
-      $('#alert_toast').addClass('bg-danger')
-    if($bg == 'info')
-      $('#alert_toast').addClass('bg-info')
-    if($bg == 'warning')
-      $('#alert_toast').addClass('bg-warning')
-    $('#alert_toast .toast-body').html($msg)
-    $('#alert_toast').toast({delay:3000}).toast('show');
-  }
-  $(document).ready(function(){
-    $('#preloader').fadeOut('fast', function() {
-        $(this).remove();
-      })
-  })
-</script>
+    <script
+      type="text/javascript"
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"
+    ></script>
+    <script type="text/javascript" src=""></script>
+    <script type="text/javascript" src=""></script>
+    <script type="text/Javascript"></script>
+  </body>
 </html>
